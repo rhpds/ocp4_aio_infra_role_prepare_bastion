@@ -9,7 +9,7 @@
 - name: Create temporary users SSH public key file
   ansible.builtin.lineinfile:
     path: /tmp/user-key.pub
-    line: "{{ ssh_key }}"
+    line: "{{ ocp4_aio_ssh_key }}"
     create: yes
 
 - name: Inject users SSH key into Bastion VM for Ansible

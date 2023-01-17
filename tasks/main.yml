@@ -34,9 +34,13 @@
     dest: /var/lib/libvirt/images/centos8-kvm-cnv.qcow2
   when: not centos8_cnv.stat.exists
 
+- name: Generate the root password
+  set_fact:
+    bastion_password: "{{ lookup('password', '/dev/null length=12 chars=ascii_letters,digits') }}"
+
 - name: Set the root password on the centos8-kvm-cnv image
   ansible.builtin.command: >
-    virt-customize -a /var/lib/libvirt/images/centos8-kvm-cnv.qcow2 --root-password password:redhat
+    virt-customize -a /var/lib/libvirt/images/centos8-kvm-cnv.qcow2 --root-password password:{{ bastion_password }}
   when: not centos8_cnv.stat.exists
 
 - name: Setup httpd in the bastion image

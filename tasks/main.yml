@@ -36,24 +36,14 @@
 
 - name: Set the root password on the centos8-kvm-cnv image
   ansible.builtin.command: >
-    virt-customize -a /var/lib/libvirt/images/centos8-kvm-cnv.qcow2 --root-password password:{{ ocp4_aio_root_password }}
+    virt-customize -a /var/lib/libvirt/images/centos8-kvm-cnv.qcow2 --root-password password:redhat
   when: not centos8_cnv.stat.exists
 
-- name: Setup httpd in the bastion image
-  ansible.builtin.command: >
-    virt-customize -a /var/lib/libvirt/images/ocp4-bastion.qcow2 --install httpd
-  when: not centos8_cnv.stat.exists
+#- name: Setup httpd in the bastion image
+#  ansible.builtin.command: >
+#    virt-customize -a /var/lib/libvirt/images/ocp4-bastion.qcow2 --install httpd
+#  when: not centos8_cnv.stat.exists
 
-- name: Convert centos8-kvm-cnv image to raw
-  ansible.builtin.command: >
-    qemu-img convert -f qcow2 -O raw
-    /var/lib/libvirt/images/centos8-kvm-cnv.qcow2
-    /var/lib/libvirt/images/centos8-kvm-cnv.img
-
-- name: Inject CentOS8 base image to bastion machine
-  ansible.builtin.shell: >
-     virt-customize -a /var/lib/libvirt/images/ocp4-bastion.qcow2 --upload /var/lib/libvirt/images/centos8-kvm-cnv.img:/var/www/html/rhel8-kvm.img --selinux-relabel
-  when: not centos8_cnv.stat.exists
 
 - name: Start Bastion virtual machine
   virt:

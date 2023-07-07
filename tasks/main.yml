@@ -2,7 +2,7 @@
 # vim: set ft=ansible:
 
 - name: Make sure Bastion VM isn't running
-  ansible.builtin.command: virsh shutdown ocp4-shutdown
+  ansible.builtin.command: virsh shutdown ocp4-bastion
 
 - name: Create temporary users SSH public key file
   ansible.builtin.lineinfile:

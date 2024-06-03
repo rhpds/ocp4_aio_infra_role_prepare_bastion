@@ -23,21 +23,21 @@
 
 - name: Check if we've done this stage before with existing image
   ansible.builtin.stat:
-    path: /var/lib/libvirt/images/centos8-kvm-cnv.qcow2
-  register: centos8_cnv
+    path: /var/lib/libvirt/images/centos9-kvm-cnv.qcow2
+  register: centos9_cnv
 
-- name: Make a copy of the centos8-kvm image
-  when: not centos8_cnv.stat.exists
+- name: Make a copy of the centos9-kvm image
+  when: not centos9_cnv.stat.exists
   ansible.builtin.copy:
     remote_src: true
-    src: /var/lib/libvirt/images/centos8-kvm.qcow2
-    dest: /var/lib/libvirt/images/centos8-kvm-cnv.qcow2
+    src: /var/lib/libvirt/images/centos9-kvm.qcow2
+    dest: /var/lib/libvirt/images/centos9-kvm-cnv.qcow2
     mode: "0664"
 
-- name: Set the root password on the centos8-kvm-cnv image
-  when: not centos8_cnv.stat.exists
+- name: Set the root password on the centos9-kvm-cnv image
+  when: not centos9_cnv.stat.exists
   ansible.builtin.command: >
-    virt-customize -a /var/lib/libvirt/images/centos8-kvm-cnv.qcow2 --root-password password:{{ ocp4_aio_root_password }}
+    virt-customize -a /var/lib/libvirt/images/centos9-kvm-cnv.qcow2 --root-password password:{{ ocp4_aio_root_password }}
 
 - name: Start Bastion virtual machine
   ansible.builtin.shell: virsh start ocp4-bastion
